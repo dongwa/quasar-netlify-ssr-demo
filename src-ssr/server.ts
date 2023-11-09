@@ -18,7 +18,8 @@ import {
   ssrRenderPreloadTag,
   ssrServeStaticContent,
 } from 'quasar/wrappers';
-
+import serverless from 'serverless-http';
+import { Server } from 'http';
 /**
  * Create your webserver and return its instance.
  * If needed, prepare your webserver to receive
@@ -53,13 +54,18 @@ export const create = ssrCreate((/* { ... } */) => {
  * For production, you can instead export your
  * handler for serverless use or whatever else fits your needs.
  */
-export const listen = ssrListen(async ({ app, port, isReady }) => {
-  await isReady();
-  return app.listen(port, () => {
-    if (process.env.PROD) {
-      console.log('Server listening at port ' + port);
-    }
-  });
+export const listen = ssrListen(async ({ app, port, isReady, ssrHandler }) => {
+  if (process.env.DEV) {
+    await isReady();
+    return await app.listen(port, () => {
+      if (process.env.PROD) {
+        console.log('Server listening at port ' + port);
+      }
+    });
+  } else {
+    // 生产环境下：
+    return { handler: serverless(ssrHandler) } as unknown as Server;
+  }
 });
 
 /**

@@ -14,6 +14,9 @@ dependencies:
   quasar:
     specifier: ^2.6.0
     version: 2.13.0
+  serverless-http:
+    specifier: ^3.2.0
+    version: 3.2.0
   vue:
     specifier: ^3.0.0
     version: 3.3.8(typescript@4.9.5)
@@ -2707,6 +2710,11 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /serverless-http@3.2.0:
+    resolution: {integrity: sha512-QvSyZXljRLIGqwcJ4xsKJXwkZnAVkse1OajepxfjkBXV0BMvRS5R546Z4kCBI8IygDzkQY0foNPC/rnipaE9pQ==}
+    engines: {node: '>=12.0'}
+    dev: false
 
   /set-function-length@1.1.1:
     resolution: {integrity: sha512-VoaqjbBJKiWtg4yRcKBQ7g7wnGnLV3M8oLvVWwOk2PdYY6PEFegR1vezXR0tw6fZGF9csVakIRjrJiy2veSBFQ==}
