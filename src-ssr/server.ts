@@ -19,7 +19,6 @@ import {
   ssrServeStaticContent,
 } from 'quasar/wrappers';
 import serverless from 'serverless-http';
-import { Server } from 'http';
 /**
  * Create your webserver and return its instance.
  * If needed, prepare your webserver to receive
@@ -43,6 +42,8 @@ export const create = ssrCreate((/* { ... } */) => {
   return app;
 });
 
+type SsrListenParams = Parameters<Parameters<typeof ssrListen>[0]>[0];
+
 /**
  * You need to make the server listen to the indicated port
  * and return the listening instance or whatever you need to
@@ -54,19 +55,19 @@ export const create = ssrCreate((/* { ... } */) => {
  * For production, you can instead export your
  * handler for serverless use or whatever else fits your needs.
  */
-export const listen = ssrListen(async ({ app, port, isReady, ssrHandler }) => {
+export const listen = ({ app, port, isReady, ssrHandler }: SsrListenParams) => {
   if (process.env.DEV) {
-    await isReady();
-    return await app.listen(port, () => {
+    isReady();
+    return app.listen(port, () => {
       if (process.env.PROD) {
         console.log('Server listening at port ' + port);
       }
     });
   } else {
     // 生产环境下：
-    return { handler: serverless(ssrHandler) } as unknown as Server;
+    return { handler: serverless(ssrHandler) };
   }
-});
+};
 
 /**
  * Should close the server and free up any resources.
